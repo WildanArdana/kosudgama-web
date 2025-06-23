@@ -1,0 +1,36 @@
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+.scrolled { background-color: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+.nav-link.active { color: #2563eb; font-weight: 600; }
+.page-section { padding-top: 5rem; padding-bottom: 5rem; }
+.aspect-video { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
+.aspect-video iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 1rem; }
+.modal-overlay.show { opacity: 1; visibility: visible; }
+.modal-close { position: absolute; top: 20px; right: 30px; font-size: 40px; color: white; cursor: pointer; z-index: 1010; }
+#berita-modal-content .modal-close, #layanan-modal-content .modal-close { color: #1f2937; }
+#gallery-lightbox .swiper-container { width: 100%; height: 100%; }
+#gallery-lightbox .swiper-slide { display: flex; align-items: center; justify-content: center; }
+#gallery-lightbox .swiper-slide img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; }
+#berita-modal-content, #layanan-modal-content { background: white; padding: 2rem; border-radius: 1rem; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; position: relative; }
+#berita-modal-content img { width: 100%; height: 300px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1.5rem; }
+.swiper-button-next, .swiper-button-prev { color: #fff !important; }
+.pengurus-slider .swiper-button-next, .pengurus-slider .swiper-button-prev { color: #1f2937 !important; }
+.swiper-pagination-bullet-active { background-color: #2563eb !important; }
+.map-container iframe { width: 100% !important; height: 100% !important; border: 0; }
+.gallery-item-container { aspect-ratio: 1 / 1; overflow: hidden; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+.gallery-item-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+.gallery-item:hover .gallery-item-container img { transform: scale(1.1); }
+
+/* **(BARU)** Mega Menu Styles */
+.mega-menu {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(-10px);
+}
+.nav-dropdown:hover .mega-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}

@@ -1,0 +1,1 @@
+<!DOCTYPE html><html><head><title>Pesan Baru dari Website</title></head><body><h2>Anda Menerima Pesan Baru</h2><p><strong>Nama:</strong> {{ $data['nama'] }}</p><p><strong>Email:</strong> {{ $data['email'] }}</p><p><strong>Subjek:</strong> {{ $data['subjek'] }}</p><hr><p><strong>Pesan:</strong></p><p>{!! nl2br(e($data['pesan'])) !!}</p></body></html>

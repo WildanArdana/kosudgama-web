@@ -1,0 +1,13 @@
+@extends('layouts.app')
+@section('content')
+    @include('partials._hero')
+    @include('partials._layanan')
+    @include('partials._testimoni')
+    @include('partials._keanggotaan')
+    @include('partials._tentang')
+    @include('partials._video')
+    @include('partials._pengurus')
+    @include('partials._berita')
+    @include('partials._galeri')
+    @include('partials._kontak')
+@endsection
