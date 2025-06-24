@@ -1,65 +1,97 @@
 <?php
+
 namespace App\Filament\Pages;
-use Filament\Pages\Page;
+
+use App\Models\Setting;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
-use App\Models\Setting;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\Section;
 use Filament\Notifications\Notification;
-use Filament\Actions\Action;
+use Filament\Pages\Page;
 
 class Settings extends Page implements HasForms
 {
     use InteractsWithForms;
+
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
+
     protected static string $view = 'filament.pages.settings';
-    protected static ?int $navigationSort = 100;
-    protected static ?string $navigationGroup = 'Konten Website';
 
     public ?array $data = [];
-    public function mount(): void { $this->data = Setting::all()->pluck('value', 'key')->toArray(); }
-    public function form(Form $form): Form {
+
+    public function mount(): void
+    {
+        $settings = Setting::pluck('value', 'key')->all();
+        $this->form->fill($settings);
+    }
+
+    public function form(Form $form): Form
+    {
         return $form
             ->schema([
-                Section::make('Halaman Utama (Hero)')
-                    ->schema([
-                        TextInput::make('hero_title')->label('Judul Utama Hero')->required(),
-                        Textarea::make('hero_subtitle')->label('Subjudul Hero')->required()->rows(3),
-                        TextInput::make('hero_button_text')->label('Teks Tombol Hero')->required(),
+                Tabs::make('Tabs')
+                    ->tabs([
+                        Tabs\Tab::make('General')
+                            ->schema([
+                                TextInput::make('site_name')->label('Site Name'),
+                                TextInput::make('site_title')->label('Site Title'),
+                                Textarea::make('meta_description')->label('Meta Description'),
+                            ]),
+                        
+                        // **TAB BARU DITAMBAHKAN DI SINI**
+                        Tabs\Tab::make('Hero Section')
+                            ->schema([
+                                TextInput::make('hero_title')->label('Hero Title'),
+                                Textarea::make('hero_subtitle')->label('Hero Subtitle'),
+                                TextInput::make('hero_button_text')->label('Hero Button Text'),
+                            ]),
+                            
+                        Tabs\Tab::make('Contact')
+                            ->schema([
+                                TextInput::make('contact_email')->label('Contact Email')->email(),
+                                TextInput::make('contact_phone')->label('Contact Phone'),
+                                TextInput::make('contact_whatsapp')
+                                    ->label('Contact Whatsapp')
+                                    ->placeholder('6281234567890')
+                                    ->helperText('Masukkan nomor tanpa tanda + atau spasi.'),
+                                Textarea::make('contact_address')->label('Contact Address'),
+                            ]),
+                        Tabs\Tab::make('Social Media')
+                            ->schema([
+                                TextInput::make('social_facebook')->label('Facebook URL')->url(),
+                                TextInput::make('social_twitter')->label('Twitter URL')->url(),
+                                TextInput::make('social_instagram')->label('Instagram URL')->url(),
+                                TextInput::make('social_youtube')->label('YouTube URL')->url(),
+                                TextInput::make('social_linkedin')->label('LinkedIn URL')->url(),
+                            ]),
                     ]),
-                Section::make('Tentang Kami')
-                    ->schema([
-                        TextInput::make('tentang_title')->label('Judul Tentang Kami')->required(),
-                        Textarea::make('tentang_description')->label('Deskripsi Tentang Kami')->required()->rows(4),
-                        Textarea::make('tentang_visi')->label('Visi')->required()->rows(3),
-                        Textarea::make('tentang_misi')->label('Misi')->required()->rows(3),
-                    ]),
-                Section::make('Hubungi Kami & Sosial Media')
-                    ->schema([
-                        TextInput::make('kontak_alamat')->label('Alamat Kantor')->required(),
-                        TextInput::make('kontak_telepon')->label('Nomor Telepon')->required(),
-                        TextInput::make('kontak_email')->label('Alamat Email')->email()->required(),
-                        Textarea::make('kontak_jam_operasional')->label('Jam Operasional')->rows(3)->required(),
-                        Textarea::make('kontak_maps_embed')->label('Link Embed Google Maps')->rows(4)->helperText('Salin kode "Embed a map" dari Google Maps dan tempel di sini.'),
-                        TextInput::make('social_facebook')->label('Link Facebook')->url()->nullable(),
-                        TextInput::make('social_twitter')->label('Link Twitter')->url()->nullable(),
-                        TextInput::make('social_instagram')->label('Link Instagram')->url()->nullable(),
-                        TextInput::make('social_youtube')->label('Link YouTube')->url()->nullable(),
-                    ]),
-            ])->statePath('data');
+            ])
+            ->statePath('data');
     }
-    protected function getFormActions(): array
+
+    public function getFormActions(): array
     {
-        return [Action::make('save')->label('Simpan Perubahan')->submit('submit'),];
+        return [
+            \Filament\Actions\Action::make('save')
+                ->label('Save changes')
+                ->submit('submit'),
+        ];
     }
-    public function submit(): void {
-        $formData = $this->form->getState();
-        foreach ($formData as $key => $value) {
-            Setting::updateOrCreate(['key' => $key], ['value' => $value ?? '']);
+
+    public function submit(): void
+    {
+        $data = $this->form->getState();
+
+        foreach ($data as $key => $value) {
+            Setting::updateOrCreate(['key' => $key], ['value' => $value]);
         }
-        Notification::make()->title('Pengaturan berhasil disimpan!')->success()->send();
+        
+        Notification::make()
+            ->title('Settings saved successfully!')
+            ->success()
+            ->send();
     }
 }

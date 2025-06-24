@@ -1,10 +1,9 @@
 <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all-smooth">
     <div class="container mx-auto px-6 py-2 flex justify-between items-center">
-        <a href="#beranda" class="page-link">
-            {{-- **(DIUBAH)** Mengganti gambar dengan teks --}}
-            <span class="text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
-                KOSUDGAMA
-            </span>
+        
+        {{-- **(INI BAGIAN YANG DIPERBAIKI)** --}}
+        <a href="{{ url('/') }}">
+            <img src="{{ asset('images/logo.png') }}" alt="KOSUDGAMA Logo" class="h-16">
         </a>
         
         {{-- Navigasi Desktop --}}

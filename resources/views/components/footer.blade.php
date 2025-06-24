@@ -1,13 +1,36 @@
 <footer class="bg-gray-900 text-white">
     <div class="container mx-auto px-6 py-12">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {{-- Bagian ini yang diubah --}}
             <div>
-                {{-- **(DIUBAH)** Mengganti gambar dengan teks --}}
-                <h3 class="text-2xl font-bold mb-4">KOSUDGAMA</h3>
-                <p class="text-gray-400">Koperasi Kosudgama Daya Gemilang.</p>
+                <a href="{{ url('/') }}">
+                    {{-- Mengganti class h-12 (tinggi) menjadi w-40 (lebar) --}}
+                    <img src="{{ asset('images/logo.png') }}" alt="KOSUDGAMA Logo" class="w-40 mb-3">
+                </a>
+                <p class="text-gray-400">
+                    Koperasi Kosudgama Daya Gemilang.
+                </p>
             </div>
-            <div><h4 class="font-semibold text-lg mb-4">Tautan Cepat</h4><ul class="space-y-2"><li><a href="#layanan" class="page-link text-gray-400 hover:text-white">Layanan</a></li><li><a href="#keanggotaan" class="page-link text-gray-400 hover:text-white">Keanggotaan</a></li><li><a href="#tentang" class="page-link text-gray-400 hover:text-white">Tentang</a></li><li><a href="#kontak" class="page-link text-gray-400 hover:text-white">Kontak</a></li></ul></div>
-            <div><h4 class="font-semibold text-lg mb-4">Layanan Kami</h4><ul class="space-y-2"><li class="text-gray-400">Simpan Pinjam</li><li class="text-gray-400">Swalayan</li><li class="text-gray-400">Jasa</li><li class="text-gray-400">Apotek</li></ul></div>
+            
+            {{-- Bagian lainnya tetap sama --}}
+            <div>
+                <h4 class="font-semibold text-lg mb-4">Tautan Cepat</h4>
+                <ul class="space-y-2">
+                    <li><a href="#layanan" class="page-link text-gray-400 hover:text-white">Layanan</a></li>
+                    <li><a href="#keanggotaan" class="page-link text-gray-400 hover:text-white">Keanggotaan</a></li>
+                    <li><a href="#tentang" class="page-link text-gray-400 hover:text-white">Tentang</a></li>
+                    <li><a href="#kontak" class="page-link text-gray-400 hover:text-white">Kontak</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold text-lg mb-4">Layanan Kami</h4>
+                <ul class="space-y-2">
+                    <li class="text-gray-400">Simpan Pinjam</li>
+                    <li class="text-gray-400">Swalayan</li>
+                    <li class="text-gray-400">Jasa</li>
+                    <li class="text-gray-400">Apotek</li>
+                </ul>
+            </div>
             <div>
                 <h4 class="font-semibold text-lg mb-4">Ikuti Kami</h4>
                 <div class="flex space-x-4">
@@ -18,6 +41,8 @@
                 </div>
             </div>
         </div>
-        <div class="mt-12 border-t border-gray-800 pt-8 text-center text-gray-500"><p>&copy; {{ date('Y') }} Hak Cipta Dilindungi. Koperasi Kosudgama Daya Gemilang.</p></div>
+        <div class="mt-12 border-t border-gray-800 pt-8 text-center text-gray-500">
+            <p>&copy; {{ date('Y') }} Hak Cipta Dilindungi. Koperasi Kosudgama Daya Gemilang.</p>
+        </div>
     </div>
 </footer>
