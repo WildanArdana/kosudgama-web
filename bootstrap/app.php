@@ -10,9 +10,14 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware): void {
-        //
+    ->withMiddleware(function (Middleware $middleware) {
+        // Menambahkan middleware LogVisitor ke dalam grup 'web'.
+        // Middleware ini akan dijalankan untuk setiap request HTTP
+        // yang masuk melalui routes/web.php.
+        $middleware->web(append: [
+            \App\Http\Middleware\LogVisitor::class,
+        ]);
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
-        //
+    ->withExceptions(function (Exceptions $exceptions) {
+        // Konfigurasi penanganan exception bisa ditambahkan di sini.
     })->create();
