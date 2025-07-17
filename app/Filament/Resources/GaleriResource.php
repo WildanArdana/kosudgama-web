@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Filament\Resources;
+
 use App\Filament\Resources\GaleriResource\Pages;
 use App\Models\Galeri;
 use Filament\Forms;
@@ -7,6 +9,9 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+
+// Tambahkan use statement untuk ImageColumn
+use Filament\Tables\Columns\ImageColumn;
 
 class GaleriResource extends Resource
 {
@@ -18,9 +23,22 @@ class GaleriResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\FileUpload::make('image')->image()->required()->directory('galeri'),
-            Forms\Components\TextInput::make('caption')->maxLength(255),
-            Forms\Components\TextInput::make('order')->numeric()->default(0),
+            // Mengatur agar gambar disimpan di direktori 'galeri' pada disk 'public'
+            Forms\Components\FileUpload::make('image')
+                ->label('Gambar')
+                ->image()
+                ->required()
+                ->directory('galeri')
+                ->disk('public'),
+
+            Forms\Components\TextInput::make('caption')
+                ->label('Keterangan')
+                ->maxLength(255),
+
+            Forms\Components\TextInput::make('order')
+                ->label('Urutan')
+                ->numeric()
+                ->default(0),
         ]);
     }
 
@@ -28,9 +46,18 @@ class GaleriResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image'),
-                Tables\Columns\TextColumn::make('caption')->searchable(),
-                Tables\Columns\TextColumn::make('order')->sortable(),
+                // PERBAIKAN: Tambahkan ->disk('public') untuk memberitahu Filament lokasi gambar
+                ImageColumn::make('image')
+                    ->label('Gambar')
+                    ->disk('public'),
+
+                Tables\Columns\TextColumn::make('caption')
+                    ->label('Keterangan')
+                    ->searchable(),
+                    
+                Tables\Columns\TextColumn::make('order')
+                    ->label('Urutan')
+                    ->sortable(),
             ])
             ->reorderable('order')
             ->actions([
@@ -44,5 +71,8 @@ class GaleriResource extends Resource
             ]);
     }
     
-    public static function getPages(): array { return ['index' => Pages\ListGaleris::route('/')]; }    
+    public static function getPages(): array 
+    { 
+        return ['index' => Pages\ListGaleris::route('/')]; 
+    }    
 }

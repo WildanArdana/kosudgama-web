@@ -1,16 +1,15 @@
-<section id="testimoni" class="page-section bg-gray-50">
+<section id="testimoni" class="page-section bg-gray-50 py-20">
     <div class="container mx-auto px-6">
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
-            <!-- Kolom Testimoni -->
+        {{-- Mengubah grid utama menjadi 1 kolom di mobile dan 2 di desktop --}}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            
             <div>
-                <div class="mb-8">
+                <div class="mb-8 text-center lg:text-left">
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Apa Kata Anggota Kami</h2>
                     <p class="text-lg text-gray-600 mt-2">Kepuasan dan kepercayaan anggota adalah prioritas utama dan bukti keberhasilan kami.</p>
                 </div>
                 
-                {{-- (DIUBAH) Wrapper untuk slider dan pagination --}}
                 <div class="relative">
-                    {{-- Container slider dengan overflow-hidden dan padding untuk shadow --}}
                     <div class="swiper-container testimoni-slider overflow-hidden py-2">
                         <div class="swiper-wrapper">
                             @forelse($testimonis as $testimoni)
@@ -36,12 +35,10 @@
                         </div>
                     </div>
                 </div>
-                {{-- Posisi pagination di luar container agar tidak terpotong --}}
                 <div class="swiper-pagination testimoni-pagination text-center mt-4 relative"></div>
             </div>
 
-            <!-- Kolom Statistik -->
-            <div class="grid grid-cols-2 gap-8">
+            <div class="grid grid-cols-2 gap-8 mt-12 lg:mt-0">
                 @forelse($statistiks as $statistik)
                 <div class="bg-white p-8 rounded-xl shadow-lg text-center">
                     <div class="bg-blue-100 text-blue-600 rounded-full w-16 h-16 flex items-center justify-center mb-4 mx-auto p-3">

@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use App\Models\Setting;
 use App\Models\Layanan;
 use App\Models\Berita;
@@ -12,38 +14,70 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    /**
+     * Menampilkan halaman utama.
+     */
     public function index()
     {
-        $settings = Setting::all()->pluck('value', 'key');
-        $layanans = Layanan::orderBy('order', 'asc')->get();
-        $pengurus = Pengurus::orderBy('id', 'asc')->get();
-        $berita = Berita::orderBy('date', 'desc')->get();
-        $heroSliders = Slider::where('location', 'hero')->orderBy('order', 'asc')->get();
-        $tentangSliders = Slider::where('location', 'tentang')->orderBy('order', 'asc')->get();
-        $galeris = Galeri::orderBy('order', 'asc')->take(8)->get(); // Hanya 8 di halaman depan
-        $testimonis = Testimoni::orderBy('order', 'asc')->get();
-        $statistiks = Statistik::orderBy('order', 'asc')->get();
-
-        return view('welcome', compact(
-            'settings', 'layanans', 'pengurus', 'berita', 'heroSliders', 
-            'tentangSliders', 'galeris', 'testimonis', 'statistiks'
-        ));
+        return view('welcome', [
+            'settings' => Setting::pluck('value', 'key'),
+            'layanans' => Layanan::orderBy('order', 'asc')->get(),
+            'pengurus' => Pengurus::orderBy('id', 'asc')->get(),
+            'heroSliders' => Slider::where('location', 'hero')->orderBy('order', 'asc')->get(),
+            'tentangSliders' => Slider::where('location', 'tentang')->orderBy('order', 'asc')->get(),
+            'testimonis' => Testimoni::orderBy('order', 'asc')->get(),
+            'statistiks' => Statistik::orderBy('order', 'asc')->get(),
+            'galeris' => Galeri::orderBy('order', 'asc')->take(8)->get(),
+            'berita' => Berita::latest('date')->take(3)->get(),
+            'berita_count' => Berita::count(),
+        ]);
     }
 
-    // **(BARU)** Metode untuk halaman galeri lengkap
-    public function galeri()
+    /**
+     * Menampilkan halaman arsip berita.
+     */
+    public function beritaIndex()
     {
-        // Ambil semua data galeri
-        $all_galeris = Galeri::orderBy('order', 'asc')->get();
-        
-        // Kirimkan juga data yang dibutuhkan oleh layout utama agar tidak error
-        $settings = Setting::all()->pluck('value', 'key');
-        $berita = Berita::orderBy('date', 'desc')->get();
+        return view('berita', [
+            'all_berita' => Berita::latest('date')->paginate(9),
+            'settings' => Setting::pluck('value', 'key'),
+            'berita' => collect(), // Mengirim koleksi kosong agar layout tidak error
+        ]);
+    }
 
+    /**
+     * Menampilkan halaman galeri lengkap.
+     */
+    public function galeriIndex()
+    {
         return view('galeri', [
-            'all_galeris' => $all_galeris,
-            'settings' => $settings,
+            'all_galeris' => Galeri::orderBy('order', 'asc')->paginate(12),
+            'settings' => Setting::pluck('value', 'key'),
+            'berita' => collect(), // Mengirim koleksi kosong agar layout tidak error
+        ]);
+    }
+
+    /**
+     * Menampilkan halaman detail untuk satu berita.
+     */
+    public function beritaShow(Berita $berita)
+    {
+        return view('berita-detail', [
             'berita' => $berita,
+            'settings' => Setting::pluck('value', 'key'),
+            'berita_layout' => collect() 
+        ]);
+    }
+
+    /**
+     * (BARU) Menampilkan halaman detail untuk satu layanan.
+     */
+    public function layananShow(Layanan $layanan)
+    {
+        return view('layanan-detail', [
+            'layanan' => $layanan,
+            'settings' => Setting::pluck('value', 'key'),
+            'berita' => collect(), // Kirim koleksi kosong agar layout tidak error
         ]);
     }
 }
