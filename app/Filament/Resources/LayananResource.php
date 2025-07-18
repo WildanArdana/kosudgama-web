@@ -1,16 +1,19 @@
 <?php
+
 namespace App\Filament\Resources;
+
 use App\Filament\Resources\LayananResource\Pages;
 use App\Models\Layanan;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\FileUpload;
 
 class LayananResource extends Resource
 {
@@ -22,12 +25,32 @@ class LayananResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            TextInput::make('title')->required()->maxLength(255)->columnSpanFull(),
-            TextInput::make('icon')->required()->helperText('Nama ikon dari Feather Icons (e.g., dollar-sign)'),
-            Select::make('color')->options(['blue' => 'Biru', 'yellow' => 'Kuning', 'purple' => 'Ungu', 'green' => 'Hijau'])->required(),
-            Textarea::make('snippet')->required()->maxLength(255)->helperText('Deskripsi singkat yang tampil di kartu.'),
-            RichEditor::make('full_description')->required()->columnSpanFull()->helperText('Deskripsi lengkap yang tampil saat diklik.'),
-            TextInput::make('order')->numeric()->default(0),
+            Forms\Components\Section::make('Informasi Dasar')
+                ->schema([
+                    TextInput::make('title')->label('Judul Layanan')->required()->maxLength(255)->columnSpanFull(),
+
+                    FileUpload::make('icon')
+                        ->label('Upload Ikon (SVG atau PNG)')
+                        ->directory('layanans')
+                        ->visibility('public')
+                        ->disk('public')
+                        ->acceptedFileTypes(['image/svg+xml', 'image/png'])
+                        // ✅ PERBAIKAN: Menambahkan batasan ukuran file 15 MB (15360 KB)
+                        ->maxSize(15360) 
+                        ->required()
+                        ->helperText('Upload file .svg atau .png. Ukuran maksimal 15MB.'),
+
+                    Select::make('color')->label('Warna Tema')
+                        ->options(['blue' => 'Biru', 'yellow' => 'Kuning', 'purple' => 'Ungu', 'green' => 'Hijau'])
+                        ->required(),
+                    Textarea::make('snippet')->label('Deskripsi Singkat')->required()->columnSpanFull(),
+                ])->columns(2),
+
+            Forms\Components\Section::make('Konten Lengkap')
+                ->schema([RichEditor::make('full_description')->label('Deskripsi Lengkap')->required()->columnSpanFull()]),
+
+            Forms\Components\Section::make('Pengaturan Tambahan')
+                ->schema([TextInput::make('order')->label('Urutan Tampilan')->numeric()->default(0)])
         ]);
     }
 
@@ -35,21 +58,28 @@ class LayananResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title')->searchable(),
-                Tables\Columns\TextColumn::make('snippet')->limit(50),
-                Tables\Columns\TextColumn::make('order')->sortable(),
+                Tables\Columns\TextColumn::make('order')->label('Urutan')->sortable(),
+                Tables\Columns\ImageColumn::make('icon')->label('Ikon')->disk('public'),
+                Tables\Columns\TextColumn::make('title')->label('Judul')->searchable(),
+                Tables\Columns\TextColumn::make('snippet')->label('Deskripsi Singkat')->limit(50),
             ])
             ->reorderable('order')
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->defaultSort('order', 'asc')
+            ->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()])
+            ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make()])]);
     }
-    
-    public static function getPages(): array { return ['index' => Pages\ListLayanans::route('/')]; }    
+
+    public static function getRelations(): array
+    {
+        return [];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListLayanans::route('/'),
+            'create' => Pages\CreateLayanan::route('/create'),
+            'edit' => Pages\EditLayanan::route('/{record}/edit'),
+        ];
+    }
 }
