@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash; // Penting untuk ditambahkan
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,13 +18,15 @@ class DatabaseSeeder extends Seeder
             ['email' => 'admin@kosudgama.com'],
             [
                 'name' => 'Admin',
-                'password' => Hash::make('password'), // Menggunakan Hash::make() untuk keamanan
+                'password' => Hash::make('password'),
             ]
         );
 
+        // Memanggil semua seeder yang dibutuhkan oleh aplikasi
         $this->call([
             SettingSeeder::class,
             TentangSeeder::class,
+            KeanggotaanSeeder::class, // <-- BARIS INI DITAMBAHKAN
         ]);
     }
 }

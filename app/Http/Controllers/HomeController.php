@@ -11,6 +11,7 @@ use App\Models\Galeri;
 use App\Models\Testimoni;
 use App\Models\Statistik;
 use App\Models\Tentang;
+use App\Models\Keanggotaan;
 use Illuminate\Contracts\View\View;
 
 class HomeController extends Controller
@@ -30,10 +31,13 @@ class HomeController extends Controller
         $statistiks     = Statistik::orderBy('order')->get();
         $galeris        = Galeri::orderBy('order')->take(8)->get();
         $berita         = Berita::latest('date')->take(3)->get();
-        $tentang        = Tentang::first();
         $berita_count   = Berita::count();
 
-        // Mengirim semua data ke view dengan nama variabel yang sudah disesuaikan
+        // **PERBAIKAN**: Mengambil data TERBARU, bukan yang pertama
+        $tentang        = Tentang::latest()->first();
+        $keanggotaan    = Keanggotaan::latest()->first();
+
+        // Mengirim semua data ke view
         return view('welcome', compact(
             'settings',
             'heroSliders',
@@ -45,13 +49,13 @@ class HomeController extends Controller
             'galeris',
             'berita',
             'tentang',
-            'berita_count'
+            'berita_count',
+            'keanggotaan'
         ));
     }
 
-    /**
-     * Menampilkan halaman arsip berita.
-     */
+    // ... (sisa controller tidak perlu diubah)
+    
     public function beritaIndex(): View
     {
         $settings = Setting::pluck('value', 'key');
@@ -59,9 +63,6 @@ class HomeController extends Controller
         return view('berita', compact('all_berita', 'settings'));
     }
 
-    /**
-     * Menampilkan detail berita.
-     */
     public function beritaShow(Berita $berita): View
     {
         $settings = Setting::pluck('value', 'key');
@@ -69,9 +70,6 @@ class HomeController extends Controller
         return view('berita-detail', compact('berita', 'recentPosts', 'settings'));
     }
 
-    /**
-     * Menampilkan halaman arsip galeri.
-     */
     public function galeriIndex(): View
     {
         $settings = Setting::pluck('value', 'key');
@@ -79,9 +77,6 @@ class HomeController extends Controller
         return view('galeri', compact('all_galeris', 'settings'));
     }
 
-    /**
-     * Menampilkan detail layanan.
-     */
     public function layananShow(Layanan $layanan): View
     {
         $settings = Setting::pluck('value', 'key');
