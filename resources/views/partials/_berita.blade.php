@@ -9,7 +9,8 @@
         {{-- Grid untuk menampilkan 3 berita teratas --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @forelse($berita as $item)
-                <div class="berita-item group bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transform hover:-translate-y-2 transition-transform duration-300 ease-in-out">
+                {{-- PERBAIKAN: Membungkus kembali kartu dengan tag <a> --}}
+                <a href="{{ route('berita.show', $item) }}" class="berita-item group bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transform hover:-translate-y-2 transition-transform duration-300 ease-in-out">
                     <div class="overflow-hidden">
                         <img src="{{ Storage::url($item->image) }}" alt="{{ $item->title }}" class="h-48 w-full object-cover group-hover:scale-110 transition-transform duration-300">
                     </div>
@@ -18,13 +19,13 @@
                         <h3 class="text-xl font-bold mb-2 text-gray-800 group-hover:text-blue-600 transition-colors">{{ $item->title }}</h3>
                         <p class="text-gray-600 flex-grow">{{ $item->snippet ?? Str::limit(strip_tags($item->content), 120) }}</p>
                     </div>
-                </div>
+                </a>
             @empty
                 <p class="col-span-3 text-center text-gray-500 py-8">Belum ada berita yang dipublikasikan saat ini.</p>
             @endforelse
         </div>
 
-        {{-- Tombol "Lihat Semua" yang hanya muncul jika total berita > 3 --}}
+        {{-- Logika tombol ini akan berfungsi setelah controller diperbaiki --}}
         @if(isset($berita_count) && $berita_count > 3)
             <div class="text-center mt-12">
                 <a href="{{ route('berita.index') }}" 
