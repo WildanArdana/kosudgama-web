@@ -37,7 +37,14 @@ class TentangResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\Textarea::make('mission')
                     ->required()
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->helperText('Tulis setiap poin misi di baris baru.'), // Helper text
+                
+                // ✅ PERBAIKAN: Menambahkan form input untuk 'Tujuan'
+                Forms\Components\Textarea::make('tujuan')
+                    ->required()
+                    ->columnSpanFull()
+                    ->helperText('Tulis setiap poin tujuan di baris baru.'), // Helper text
             ]);
     }
 

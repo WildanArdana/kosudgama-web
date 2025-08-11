@@ -16,5 +16,6 @@ class Tentang extends Model
         'description',
         'vision',
         'mission',
+        'tujuan', // <-- Tambahkan ini
     ];
 }

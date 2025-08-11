@@ -24,8 +24,8 @@
                 </a>
                 <div x-show="aboutDropdownOpen" x-transition class="absolute z-10 mt-2 w-48 bg-white rounded-md shadow-xl py-1">
                     <a href="{{ url('/#sejarah') }}" class="page-link block px-4 py-2 text-sm text-gray-700 hover:bg-blue-500 hover:text-white">Sejarah</a>
-                    <a href="{{ url('/#visimisi') }}" class="page-link block px-4 py-2 text-sm text-gray-700 hover:bg-blue-500 hover:text-white">Visi & Misi</a>
-                    <a href="{{ url('/#pengurus') }}" class="page-link block px-4 py-2 text-sm text-gray-700 hover:bg-blue-500 hover:text-white">Pengurus</a>
+                    <a href="{{ url('/#visimisi') }}" class="page-link block px-4 py-2 text-sm text-gray-700 hover:bg-blue-500 hover:text-white">Visi, Misi & Tujuan</a>
+                    <a href="{{ url('/#pengurus') }}" class="page-link block px-4 py-2 text-sm text-gray-700 hover:bg-blue-500 hover:text-white">Pengurus & Pengawas</a>
                 </div>
             </div>
 
@@ -62,8 +62,8 @@
                 </button>
                 <div x-show="aboutDropdownOpen" x-collapse class="bg-gray-50 border-t border-b border-gray-200">
                     <a @click="mobileMenuOpen = false" href="{{ url('/#sejarah') }}" class="page-link block py-2 text-center text-sm text-gray-600 hover:bg-gray-200">Sejarah</a>
-                    <a @click="mobileMenuOpen = false" href="{{ url('/#visimisi') }}" class="page-link block py-2 text-center text-sm text-gray-600 hover:bg-gray-200">Visi & Misi</a>
-                    <a @click="mobileMenuOpen = false" href="{{ url('/#pengurus') }}" class="page-link block py-2 text-center text-sm text-gray-600 hover:bg-gray-200">Pengurus</a>
+                    <a @click="mobileMenuOpen = false" href="{{ url('/#visimisi') }}" class="page-link block py-2 text-center text-sm text-gray-600 hover:bg-gray-200">Visi, Misi & Tujuan</a>
+                    <a @click="mobileMenuOpen = false" href="{{ url('/#pengurus') }}" class="page-link block py-2 text-center text-sm text-gray-600 hover:bg-gray-200">Pengurus & Pengawas</a>
                 </div>
             </div>
 

@@ -29,11 +29,12 @@ class HomeController extends Controller
         $pengurus       = Pengurus::orderBy('id')->get();
         $testimonis     = Testimoni::orderBy('order')->get();
         $statistiks     = Statistik::orderBy('order')->get();
-        $galeris        = Galeri::orderBy('order')->take(8)->get();
+        
+        // ✅ PERBAIKAN DI SINI: Mengubah take(3) menjadi take(4) untuk galeri
+        $galeris        = Galeri::orderBy('order')->take(4)->get();
+        
         $berita         = Berita::latest('date')->take(3)->get();
         $berita_count   = Berita::count();
-
-        // **PERBAIKAN**: Mengambil data TERBARU, bukan yang pertama
         $tentang        = Tentang::latest()->first();
         $keanggotaan    = Keanggotaan::latest()->first();
 
@@ -54,8 +55,9 @@ class HomeController extends Controller
         ));
     }
 
-    // ... (sisa controller tidak perlu diubah)
-    
+    /**
+     * Menampilkan halaman arsip berita.
+     */
     public function beritaIndex(): View
     {
         $settings = Setting::pluck('value', 'key');
@@ -63,6 +65,9 @@ class HomeController extends Controller
         return view('berita', compact('all_berita', 'settings'));
     }
 
+    /**
+     * Menampilkan detail berita.
+     */
     public function beritaShow(Berita $berita): View
     {
         $settings = Setting::pluck('value', 'key');
@@ -70,6 +75,9 @@ class HomeController extends Controller
         return view('berita-detail', compact('berita', 'recentPosts', 'settings'));
     }
 
+    /**
+     * Menampilkan halaman arsip galeri.
+     */
     public function galeriIndex(): View
     {
         $settings = Setting::pluck('value', 'key');
@@ -77,6 +85,9 @@ class HomeController extends Controller
         return view('galeri', compact('all_galeris', 'settings'));
     }
 
+    /**
+     * Menampilkan detail layanan.
+     */
     public function layananShow(Layanan $layanan): View
     {
         $settings = Setting::pluck('value', 'key');
